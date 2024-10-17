@@ -60,6 +60,10 @@ class HabitTile extends StatelessWidget {
                 ),
               ),
               leading: Checkbox(
+                side: BorderSide(
+                  color: Theme.of(context).colorScheme.inversePrimary,
+                  width: 2,
+                ),
                 activeColor: Colors.green,
                 value: onCompleted,
                 onChanged: onChanged,
