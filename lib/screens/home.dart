@@ -23,11 +23,24 @@ class Home extends StatelessWidget {
             IconThemeData(color: Theme.of(context).colorScheme.inversePrimary),
       ),
       drawer: Drawer(
-        child: CupertinoSwitch(
-          value: !Provider.of<ThemeProvider>(context).isLightMode,
-          onChanged: (value) =>
-              Provider.of<ThemeProvider>(context, listen: false).toggleTheme(),
-          activeColor: Colors.green,
+        backgroundColor: Colors.transparent,
+        child: InkWell(
+          onTap: () => Navigator.pop(context),
+          hoverColor: Colors.transparent,
+          splashColor: Colors.transparent,
+          child: SizedBox(
+            width: double.infinity,
+            height: double.infinity,
+            child: Center(
+              child: CupertinoSwitch(
+                value: !Provider.of<ThemeProvider>(context).isLightMode,
+                onChanged: (value) =>
+                    Provider.of<ThemeProvider>(context, listen: false)
+                        .toggleTheme(),
+                activeColor: Colors.green,
+              ),
+            ),
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
