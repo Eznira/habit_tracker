@@ -1,11 +1,11 @@
 import 'package:isar/isar.dart';
 
-//part 'habit.g.dart';
+part 'habit.g.dart';
 
-//@collection
+@collection
 class Habit {
   // id
-  int id = Isar.autoIncrement;
+  final id = Isar.autoIncrement;
 
   // habit name
   late String habitName;
