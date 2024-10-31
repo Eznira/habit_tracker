@@ -20,7 +20,7 @@ const SettingsSchema = CollectionSchema(
     r'initLaunchedDay': PropertySchema(
       id: 0,
       name: r'initLaunchedDay',
-      type: IsarType.string,
+      type: IsarType.dateTime,
     )
   },
   estimateSize: _settingsEstimateSize,
@@ -43,7 +43,6 @@ int _settingsEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
-  bytesCount += 3 + object.initLaunchedDay.length * 3;
   return bytesCount;
 }
 
@@ -53,7 +52,7 @@ void _settingsSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.initLaunchedDay);
+  writer.writeDateTime(offsets[0], object.initLaunchedDay);
 }
 
 Settings _settingsDeserialize(
@@ -63,7 +62,7 @@ Settings _settingsDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = Settings();
-  object.initLaunchedDay = reader.readString(offsets[0]);
+  object.initLaunchedDay = reader.readDateTime(offsets[0]);
   return object;
 }
 
@@ -75,7 +74,7 @@ P _settingsDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readString(offset)) as P;
+      return (reader.readDateTime(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -221,58 +220,49 @@ extension SettingsQueryFilter
   }
 
   QueryBuilder<Settings, Settings, QAfterFilterCondition>
-      initLaunchedDayEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+      initLaunchedDayEqualTo(DateTime value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'initLaunchedDay',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<Settings, Settings, QAfterFilterCondition>
       initLaunchedDayGreaterThan(
-    String value, {
+    DateTime value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'initLaunchedDay',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<Settings, Settings, QAfterFilterCondition>
       initLaunchedDayLessThan(
-    String value, {
+    DateTime value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'initLaunchedDay',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<Settings, Settings, QAfterFilterCondition>
       initLaunchedDayBetween(
-    String lower,
-    String upper, {
+    DateTime lower,
+    DateTime upper, {
     bool includeLower = true,
     bool includeUpper = true,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -281,77 +271,6 @@ extension SettingsQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Settings, Settings, QAfterFilterCondition>
-      initLaunchedDayStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'initLaunchedDay',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Settings, Settings, QAfterFilterCondition>
-      initLaunchedDayEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'initLaunchedDay',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Settings, Settings, QAfterFilterCondition>
-      initLaunchedDayContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'initLaunchedDay',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Settings, Settings, QAfterFilterCondition>
-      initLaunchedDayMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'initLaunchedDay',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Settings, Settings, QAfterFilterCondition>
-      initLaunchedDayIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'initLaunchedDay',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<Settings, Settings, QAfterFilterCondition>
-      initLaunchedDayIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'initLaunchedDay',
-        value: '',
       ));
     });
   }
@@ -406,11 +325,9 @@ extension SettingsQuerySortThenBy
 
 extension SettingsQueryWhereDistinct
     on QueryBuilder<Settings, Settings, QDistinct> {
-  QueryBuilder<Settings, Settings, QDistinct> distinctByInitLaunchedDay(
-      {bool caseSensitive = true}) {
+  QueryBuilder<Settings, Settings, QDistinct> distinctByInitLaunchedDay() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'initLaunchedDay',
-          caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'initLaunchedDay');
     });
   }
 }
@@ -423,7 +340,7 @@ extension SettingsQueryProperty
     });
   }
 
-  QueryBuilder<Settings, String, QQueryOperations> initLaunchedDayProperty() {
+  QueryBuilder<Settings, DateTime, QQueryOperations> initLaunchedDayProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'initLaunchedDay');
     });

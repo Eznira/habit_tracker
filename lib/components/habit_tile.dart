@@ -20,7 +20,7 @@ class HabitTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => onChanged!(onCompleted),
+      onTap: () => onChanged!(!onCompleted),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 6),
         child: Slidable(

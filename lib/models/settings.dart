@@ -8,5 +8,5 @@ class Settings {
   final id = Isar.autoIncrement;
 
   // first launched date
-  late String initLaunchedDay;
+  late DateTime initLaunchedDay;
 }

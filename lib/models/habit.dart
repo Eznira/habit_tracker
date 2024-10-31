@@ -5,12 +5,12 @@ part 'habit.g.dart';
 @collection
 class Habit {
   // id
-  final id = Isar.autoIncrement;
+  Id id = Isar.autoIncrement;
 
   // habit name
   late String habitName;
 
-  late List<DateTime> completedDays;
+  List<DateTime> completedDays = [];
   // DateTime(),
   // DateTime(),
   // DateTime(),

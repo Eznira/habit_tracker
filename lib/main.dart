@@ -1,14 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:habit_tracker/data/database.dart';
 import 'package:habit_tracker/themes/theme_provider.dart';
 import 'package:habit_tracker/themes/themes.dart';
 import 'package:provider/provider.dart';
 
 import 'screens/home.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await HabitDb.initialize();
+
   runApp(
-    ChangeNotifierProvider(
-      create: (BuildContext context) => ThemeProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (BuildContext context) => ThemeProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (BuildContext context) => HabitDb(),
+        ),
+      ],
       child: const MyApp(),
     ),
   );

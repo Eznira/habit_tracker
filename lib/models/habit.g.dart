@@ -72,6 +72,7 @@ Habit _habitDeserialize(
   final object = Habit();
   object.completedDays = reader.readDateTimeList(offsets[0]) ?? [];
   object.habitName = reader.readString(offsets[1]);
+  object.id = id;
   return object;
 }
 
@@ -99,7 +100,9 @@ List<IsarLinkBase<dynamic>> _habitGetLinks(Habit object) {
   return [];
 }
 
-void _habitAttach(IsarCollection<dynamic> col, Id id, Habit object) {}
+void _habitAttach(IsarCollection<dynamic> col, Id id, Habit object) {
+  object.id = id;
+}
 
 extension HabitQueryWhereSort on QueryBuilder<Habit, Habit, QWhere> {
   QueryBuilder<Habit, Habit, QAfterWhere> anyId() {
