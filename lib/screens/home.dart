@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../components/custom_dialogue.dart';
 import '../components/habit_tile.dart';
+import '../data/util/util_func.dart';
 import '../models/habit.dart';
 
 class Home extends StatefulWidget {
@@ -111,72 +112,74 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        iconTheme:
-            IconThemeData(color: Theme.of(context).colorScheme.inversePrimary),
-      ),
-      drawer: Drawer(
-        backgroundColor: Colors.transparent,
-        child: InkWell(
-          onTap: () => Navigator.pop(context),
-          hoverColor: Colors.transparent,
-          splashColor: Colors.transparent,
-          child: SizedBox(
-            width: double.infinity,
-            height: double.infinity,
-            child: Center(
-              child: CupertinoSwitch(
-                value: !Provider.of<ThemeProvider>(context).isLightMode,
-                onChanged: (value) =>
-                    Provider.of<ThemeProvider>(context, listen: false)
-                        .toggleTheme(),
-                activeColor: Colors.green,
+    return Consumer2<ThemeProvider, HabitDb>(
+        builder: (context, themeDb, habitDb, child) {
+      return Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          iconTheme: IconThemeData(
+              color: Theme.of(context).colorScheme.inversePrimary),
+        ),
+        drawer: Drawer(
+          backgroundColor: Colors.transparent,
+          child: InkWell(
+            onTap: () => Navigator.pop(context),
+            hoverColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            child: SizedBox(
+              width: double.infinity,
+              height: double.infinity,
+              child: Center(
+                child: CupertinoSwitch(
+                  value: !Provider.of<ThemeProvider>(context).isLightMode,
+                  onChanged: (value) =>
+                      Provider.of<ThemeProvider>(context, listen: false)
+                          .toggleTheme(),
+                  activeColor: Colors.green,
+                ),
               ),
             ),
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        shape: const CircleBorder(),
-        onPressed: () => addAndEditNewHabit(),
-        backgroundColor: Colors.green,
-        child: Icon(
-          Icons.add,
-          color: Theme.of(context).colorScheme.inversePrimary,
+        floatingActionButton: FloatingActionButton(
+          shape: const CircleBorder(),
+          onPressed: () => addAndEditNewHabit(),
+          backgroundColor: Colors.green,
+          child: Icon(
+            Icons.add,
+            color: Theme.of(context).colorScheme.inversePrimary,
+          ),
         ),
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            HeatMap(
-              datasets: {
-                DateTime(2024, 10, 13): 3,
-                DateTime(2024, 10, 15): 2,
-                DateTime(2024, 10, 16): 5,
-                DateTime(2024, 10, 17): 7,
-              },
-              startDate: DateTime.now().subtract(const Duration(days: 12)),
-              endDate: DateTime.now().add(const Duration(days: 12)),
-              colorMode: ColorMode.opacity,
-              showText: false,
-              scrollable: true,
-              textColor: Theme.of(context).colorScheme.inversePrimary,
-              defaultColor: Theme.of(context).colorScheme.primary,
-              size: 26,
-              colorsets: const {
-                1: Colors.green,
-              },
-            ),
-            Expanded(
-              child: buildHabitList(),
-            )
-          ],
+        body: SafeArea(
+          child: Column(
+            children: [
+              HeatMap(
+                datasets: getDataSet(habitDb.habitList),
+                startDate: habitDb.initialLaunchDate,
+                endDate: DateTime.now(),
+                colorMode: ColorMode.color,
+                showText: false,
+                scrollable: true,
+                showColorTip: false,
+                textColor: Theme.of(context).colorScheme.inversePrimary,
+                defaultColor: Theme.of(context).colorScheme.primary,
+                size: 26,
+                colorsets: {
+                  1: Colors.green.shade200,
+                  2: Colors.green.shade500,
+                  3: Colors.green.shade800,
+                  4: Colors.green.shade900,
+                },
+              ),
+              Expanded(
+                child: buildHabitList(),
+              )
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
 
