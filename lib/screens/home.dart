@@ -19,20 +19,32 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   TextEditingController controller = TextEditingController();
   // add new habit
-  void addNewHabit(BuildContext context) {
+  void addAndEditNewHabit([Habit? habit]) {
+    String? oldName;
+
+    // for editing existing habit name
+    if (habit != null) {
+      oldName = habit.habitName;
+      controller.text = oldName;
+    }
     showDialog(
         context: context,
         builder: (context) {
           // Habit instance
           final habitDb = context.read<HabitDb>();
 
+          // custom dialogue
           return CustomDialogue(
             controller: controller,
 
             // handle 'save' ontap
             save: () {
-              if (controller.text != '') {
+              if (controller.text != '' && habit == null) {
                 habitDb.createHabit(controller.text);
+                controller.clear();
+                Navigator.pop(context);
+              } else {
+                habitDb.updateHabit(habit!.id, controller.text);
                 controller.clear();
                 Navigator.pop(context);
               }
@@ -57,15 +69,15 @@ class _HomeState extends State<Home> {
   }
 
   // delete habit
-  void deleteHabit(BuildContext context, Habit habit) {
-    // debug
-    print('first call for delete');
-
+  void deleteHabit(Habit habit) {
     context.read<HabitDb>().deleteHabit(habit.id);
   }
 
   // delete habit
-  void editHabit() {}
+  void editHabit(Habit habit) {
+    // call show dialogue box and prefill with habit name
+    addAndEditNewHabit(habit);
+  }
 
   Widget buildHabitList() {
     final habitDb = context.watch<HabitDb>();
@@ -82,8 +94,8 @@ class _HomeState extends State<Home> {
           habitName: habit.habitName,
           onCompleted: isCompleted,
           onChanged: (value) => toggleHabit(habit, value),
-          deleteHabit: (context) => deleteHabit(context, habit),
-          editHabit: (context) {},
+          deleteHabit: (context) => deleteHabit(habit),
+          editHabit: (context) => editHabit(habit),
         );
       },
       itemCount: habitList.length,
@@ -129,7 +141,7 @@ class _HomeState extends State<Home> {
       ),
       floatingActionButton: FloatingActionButton(
         shape: const CircleBorder(),
-        onPressed: () => addNewHabit(context),
+        onPressed: () => addAndEditNewHabit(),
         backgroundColor: Colors.green,
         child: Icon(
           Icons.add,
