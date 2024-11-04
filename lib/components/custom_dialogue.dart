@@ -34,7 +34,7 @@ class _CustomDialogueState extends State<CustomDialogue> {
       ),
       content: TextField(
         controller: widget.controller,
-        style: const TextStyle(color: Colors.grey),
+        style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
         decoration: InputDecoration(
           hintText: 'Enter your text here',
           hintStyle: const TextStyle(color: Colors.grey),
