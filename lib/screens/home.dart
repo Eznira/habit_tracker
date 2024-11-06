@@ -154,23 +154,29 @@ class _HomeState extends State<Home> {
         body: SafeArea(
           child: Column(
             children: [
-              HeatMap(
-                datasets: getDataSet(habitDb.habitList),
-                startDate: habitDb.initialLaunchDate,
-                endDate: DateTime.now(),
-                colorMode: ColorMode.color,
-                showText: false,
-                scrollable: true,
-                showColorTip: false,
-                textColor: Theme.of(context).colorScheme.inversePrimary,
-                defaultColor: Theme.of(context).colorScheme.primary,
-                size: 26,
-                colorsets: {
-                  1: Colors.green.shade200,
-                  2: Colors.green.shade500,
-                  3: Colors.green.shade800,
-                  4: Colors.green.shade900,
-                },
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: HeatMap(
+                  datasets: getDataSet(habitDb.habitList),
+                  startDate: habitDb.initialLaunchDate,
+                  endDate: DateTime.now(),
+                  colorMode: ColorMode.color,
+                  showText: false,
+                  scrollable: true,
+                  showColorTip: false,
+                  textColor: Theme.of(context).colorScheme.inversePrimary,
+                  defaultColor: Theme.of(context).colorScheme.primary,
+                  size: 26,
+                  colorsets: {
+                    1: Colors.green.shade200,
+                    2: Colors.green.shade500,
+                    3: Colors.green.shade800,
+                    4: Colors.green.shade900,
+                  },
+                ),
+              ),
+              const SizedBox(
+                height: 20,
               ),
               Expanded(
                 child: buildHabitList(),
