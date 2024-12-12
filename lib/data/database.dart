@@ -11,9 +11,11 @@ import '../models/settings.dart';
 
 class HabitDb extends ChangeNotifier {
   static late Isar isar;
-  static late DateTime firstLaunchDate;
 
-  get initialLaunchDate => firstLaunchDate;
+  Future<DateTime> getFirstDate() async {
+    Settings? settings = await isar.settings.where().findFirst();
+    return settings!.initLaunchedDay;
+  }
 
   // Getter for heatMapData
   // Future<HeatMap> get heatMapData async {
@@ -42,10 +44,7 @@ class HabitDb extends ChangeNotifier {
     // create if settings dosen't exist
     if (settings == null) {
       Settings settings = Settings()..initLaunchedDay = DateTime.now();
-      firstLaunchDate = settings.initLaunchedDay;
       await isar.writeTxn(() => isar.settings.put(settings));
-    } else {
-      firstLaunchDate = settings.initLaunchedDay;
     }
   }
 

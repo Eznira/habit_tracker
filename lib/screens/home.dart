@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
+import 'package:habit_tracker/components/custom_heat_map.dart';
 import 'package:habit_tracker/data/database.dart';
 import 'package:habit_tracker/themes/theme_provider.dart';
 import 'package:provider/provider.dart';
@@ -156,22 +156,16 @@ class _HomeState extends State<Home> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: HeatMap(
-                  datasets: getDataSet(habitDb.habitList),
-                  startDate: habitDb.initialLaunchDate,
-                  endDate: DateTime.now(),
-                  colorMode: ColorMode.color,
-                  showText: false,
-                  scrollable: true,
-                  showColorTip: false,
-                  textColor: Theme.of(context).colorScheme.inversePrimary,
-                  defaultColor: Theme.of(context).colorScheme.primary,
-                  size: 26,
-                  colorsets: {
-                    1: Colors.green.shade200,
-                    2: Colors.green.shade500,
-                    3: Colors.green.shade800,
-                    4: Colors.green.shade900,
+                child: FutureBuilder(
+                  future: habitDb.getFirstDate(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return CustomHeatMap(
+                          startDate: snapshot.data,
+                          dataSet: getDataSet(habitDb.habitList));
+                    } else {
+                      return Container();
+                    }
                   },
                 ),
               ),
