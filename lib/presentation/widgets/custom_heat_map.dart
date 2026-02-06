@@ -5,6 +5,8 @@ class CustomHeatMap extends StatelessWidget {
   const CustomHeatMap(
       {super.key, required this.startDate, required this.dataSet});
 
+
+
   final Map<DateTime, int>? dataSet;
   final DateTime? startDate;
 
@@ -27,7 +29,6 @@ class CustomHeatMap extends StatelessWidget {
         1: Colors.green.shade200,
         2: Colors.green.shade300,
         3: Colors.green.shade400,
-        4: Colors.green.shade500,
         4: Colors.green.shade600,
       },
     );

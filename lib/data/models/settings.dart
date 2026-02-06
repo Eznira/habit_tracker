@@ -5,7 +5,7 @@ part 'settings.g.dart';
 @collection
 class Settings {
   // id
-  final id = Isar.autoIncrement;
+  Id id = Isar.autoIncrement;
 
   // first launched date
   late DateTime initLaunchedDay;

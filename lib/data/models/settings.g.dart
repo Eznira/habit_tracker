@@ -62,6 +62,7 @@ Settings _settingsDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = Settings();
+  object.id = id;
   object.initLaunchedDay = reader.readDateTime(offsets[0]);
   return object;
 }
@@ -88,7 +89,9 @@ List<IsarLinkBase<dynamic>> _settingsGetLinks(Settings object) {
   return [];
 }
 
-void _settingsAttach(IsarCollection<dynamic> col, Id id, Settings object) {}
+void _settingsAttach(IsarCollection<dynamic> col, Id id, Settings object) {
+  object.id = id;
+}
 
 extension SettingsQueryWhereSort on QueryBuilder<Settings, Settings, QWhere> {
   QueryBuilder<Settings, Settings, QAfterWhere> anyId() {
