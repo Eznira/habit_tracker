@@ -10,6 +10,7 @@ class HeatmapRepoImpl implements HeatmapRepo {
   final Isar isar;
   HeatmapRepoImpl(this.isar);
 
+
   DateTime _normalize(DateTime d) => DateTime(d.year, d.month, d.day);
 
   int _heatLevel(double ratio) {
@@ -22,20 +23,32 @@ class HeatmapRepoImpl implements HeatmapRepo {
 
 
   @override
-  Future<void> updateToday({required bool increment}) async {
+  Future<void> updateToday([bool? increment]) async {
+
     final date = DateTime.now();
     final today = _normalize(date);
 
     await isar.writeTxn(() async {
       DailyHabitStats? stats = await isar.dailyHabitStats.where().dateEqualTo(today).findFirst();
 
+      //get total habits
       int totalHabits = await isar.habits.count();
+
+      //get completed habits
+      int completedHabits = await isar.habits.where().
+                                  findAll().then(
+                                  (habits) => habits.where((habit) => habit.isCompletedToday).
+                                  length);
+
+
 
       stats ??= DailyHabitStats()
         ..date = today
         ..totalHabits = totalHabits;
 
-      stats.completedCount += increment ? 1 : -1;
+
+      stats.totalHabits = totalHabits;
+      stats.completedCount = completedHabits;
       stats.intensityLevel =
           _heatLevel(stats.completedCount / stats.totalHabits);
 

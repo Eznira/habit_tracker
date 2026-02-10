@@ -26,6 +26,11 @@ const HabitSchema = CollectionSchema(
       id: 1,
       name: r'habitName',
       type: IsarType.string,
+    ),
+    r'isCompletedToday': PropertySchema(
+      id: 2,
+      name: r'isCompletedToday',
+      type: IsarType.bool,
     )
   },
   estimateSize: _habitEstimateSize,
@@ -61,6 +66,7 @@ void _habitSerialize(
 ) {
   writer.writeDateTimeList(offsets[0], object.completedDays);
   writer.writeString(offsets[1], object.habitName);
+  writer.writeBool(offsets[2], object.isCompletedToday);
 }
 
 Habit _habitDeserialize(
@@ -87,6 +93,8 @@ P _habitDeserializeProp<P>(
       return (reader.readDateTimeList(offset) ?? []) as P;
     case 1:
       return (reader.readString(offset)) as P;
+    case 2:
+      return (reader.readBool(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -501,6 +509,16 @@ extension HabitQueryFilter on QueryBuilder<Habit, Habit, QFilterCondition> {
       ));
     });
   }
+
+  QueryBuilder<Habit, Habit, QAfterFilterCondition> isCompletedTodayEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'isCompletedToday',
+        value: value,
+      ));
+    });
+  }
 }
 
 extension HabitQueryObject on QueryBuilder<Habit, Habit, QFilterCondition> {}
@@ -517,6 +535,18 @@ extension HabitQuerySortBy on QueryBuilder<Habit, Habit, QSortBy> {
   QueryBuilder<Habit, Habit, QAfterSortBy> sortByHabitNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'habitName', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Habit, Habit, QAfterSortBy> sortByIsCompletedToday() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isCompletedToday', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Habit, Habit, QAfterSortBy> sortByIsCompletedTodayDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isCompletedToday', Sort.desc);
     });
   }
 }
@@ -545,6 +575,18 @@ extension HabitQuerySortThenBy on QueryBuilder<Habit, Habit, QSortThenBy> {
       return query.addSortBy(r'id', Sort.desc);
     });
   }
+
+  QueryBuilder<Habit, Habit, QAfterSortBy> thenByIsCompletedToday() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isCompletedToday', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Habit, Habit, QAfterSortBy> thenByIsCompletedTodayDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isCompletedToday', Sort.desc);
+    });
+  }
 }
 
 extension HabitQueryWhereDistinct on QueryBuilder<Habit, Habit, QDistinct> {
@@ -558,6 +600,12 @@ extension HabitQueryWhereDistinct on QueryBuilder<Habit, Habit, QDistinct> {
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'habitName', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Habit, Habit, QDistinct> distinctByIsCompletedToday() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'isCompletedToday');
     });
   }
 }
@@ -579,6 +627,12 @@ extension HabitQueryProperty on QueryBuilder<Habit, Habit, QQueryProperty> {
   QueryBuilder<Habit, String, QQueryOperations> habitNameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'habitName');
+    });
+  }
+
+  QueryBuilder<Habit, bool, QQueryOperations> isCompletedTodayProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'isCompletedToday');
     });
   }
 }

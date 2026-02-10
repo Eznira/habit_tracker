@@ -3,11 +3,13 @@ import 'package:habit_tracker/domain/app_event_bus.dart';
 import '../../domain/app_event.dart';
 import '../../domain/entities/habit_entity.dart';
 import '../../domain/repository/habit_repo.dart';
+import '../../domain/usecases/create_habit_usecase.dart';
 import '../../domain/usecases/toggle_habit_usecase.dart';
 
 class HabitProvider extends ChangeNotifier {
   final HabitRepo _habitRepo;
   final ToggleHabitUseCase _toggleHabitUseCase;
+  final CreateHabitUseCase _createHabitUseCase;
   final AppEventBus _appEventBus;
 
   List<HabitEntity> habits = [];
@@ -15,13 +17,12 @@ class HabitProvider extends ChangeNotifier {
   HabitProvider(
       this._habitRepo,
       this._toggleHabitUseCase,
-      this._appEventBus
+      this._appEventBus,
+      this._createHabitUseCase
       ) {
-    _appEventBus.stream.listen((event) {
-      if (event is HabitToggledEvent) {
+      _appEventBus.stream.listen((event) {
         loadHabits();
-      }
-    });
+  });
   }
 
   Future<void> loadHabits() async {
@@ -31,6 +32,10 @@ class HabitProvider extends ChangeNotifier {
 
   Future<void> toggleHabit(int id, bool done) async {
     await _toggleHabitUseCase.execute(id, done);
+  }
+
+  Future<void> createHabit(String habitName) async {
+    await _createHabitUseCase.execute(habitName);
   }
 
   // Future<void> deleteHabit(int id) async {

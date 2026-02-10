@@ -42,4 +42,17 @@ class HabitRepoImpl implements HabitRepo {
     await isar.writeTxn(() => isar.habits.delete(id));
   }
 
+  @override
+  // Create
+  Future<void> createHabit(String habitName) async {
+    // create habit
+    final habit = Habit()..habitName = habitName;
+
+    // put habit in habitSchema
+    await isar.writeTxn(() async {
+      await isar.habits.put(habit);
+    });
+
+  }
+
 }

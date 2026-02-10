@@ -10,6 +10,7 @@ import '../../data/models/habit.dart';
 import '../provider/heatmap_provider.dart';
 import '../provider/settings_provider.dart';
 
+import '../widgets/custom_dialogue.dart';
 import '../widgets/custom_heat_map.dart';
 import '../widgets/habit_tile.dart';
 
@@ -26,45 +27,68 @@ class _HomeState extends State<Home> {
 
   // add new habit
   void addAndEditNewHabit([Habit? habit]) {
-    // String? oldName;
+    String? oldName;
 
-    // for editing existing habit name
-    // if (habit != null) {
-    //   oldName = habit.habitName;
-    //   controller.text = oldName;
-    // }
-    // showDialog(
-    //     context: context,
-    //     builder: (context) {
-    //       // Habit instance
-    //       final habitDb = context.read<HabitDb>();
-    //
-    //       // custom dialogue
-    //       return CustomDialogue(
-    //         controller: controller,
-    //
-    //         // handle 'save' ontap
-    //         save: () {
-    //           if (controller.text != '' && habit == null) {
-    //             habitDb.createHabit(controller.text);
-    //             controller.clear();
-    //             Navigator.pop(context);
-    //           } else {
-    //             habitDb.updateHabit(habit!.id, controller.text);
-    //             controller.clear();
-    //             Navigator.pop(context);
-    //           }
-    //         },
-    //
-    //         // handle 'cancel' onTap
-    //         cancel: () {
-    //           controller.clear();
-    //           Navigator.pop(context);
-    //         },
-    //       );
-    //     });
+    if (habit != null) {
+      oldName = habit.habitName;
+      controller.text = oldName;
+    }
+    showDialog(
+        context: context,
+        builder: (context) {
+          // Habit instance
+          final habitProvider = context.read<HabitProvider>();
 
-    // save
+          // custom dialogue
+          return CustomDialogue(
+            controller: controller,
+            // handle 'save' ontap
+            save: () {
+              if (controller.text != '' && habit == null) {
+                habitProvider.createHabit(controller.text);
+                controller.clear();
+                Navigator.pop(context);
+              } else {
+                // habitProvider.updateHabit(habit!.id, controller.text);
+                // controller.clear();
+                // Navigator.pop(context);
+              }
+            },
+
+            // handle 'cancel' onTap
+            cancel: () {
+              controller.clear();
+              Navigator.pop(context);
+            },
+          );
+        });
+
+  }
+
+  void createHabit() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          // Habit instance
+          final habitProvider = context.read<HabitProvider>();
+
+          // custom dialogue
+          return CustomDialogue(
+            controller: controller,
+            // handle 'save' ontap
+            save: () {
+                habitProvider.createHabit(controller.text);
+                controller.clear();
+                Navigator.pop(context);
+            },
+
+            // handle 'cancel' onTap
+            cancel: () {
+              controller.clear();
+              Navigator.pop(context);
+            },
+          );
+        });
   }
 
   // toggle habit completion state
@@ -97,7 +121,7 @@ class _HomeState extends State<Home> {
       // physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
         final habit = habitList[index];
-        bool isCompleted = isHabitCompleted(habit);
+        bool isCompleted = habit.isCompletedToday;
 
         return HabitTile(
           habitName: habit.name,
@@ -215,13 +239,6 @@ class _HomeState extends State<Home> {
   }
 }
 
-// Util
-bool isHabitCompleted(HabitEntity habit) {
-  final today = DateTime.now();
-
-  return (habit.completedDays.any((e) =>
-      e.year == today.year && e.month == today.month && e.day == today.day));
-}
 
 Map<DateTime, int> buildHeatMap(List<DailyStatsEntity> statEntities) {
 

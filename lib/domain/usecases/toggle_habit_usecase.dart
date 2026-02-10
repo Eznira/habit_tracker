@@ -13,7 +13,7 @@ class ToggleHabitUseCase {
 
   Future<void> execute(int habitId, bool completed) async {
     await habitRepo.toggleHabit(habitId, completed);
-    await heatMapRepo.updateToday(increment: completed);
+    await heatMapRepo.updateToday(completed);
 
     eventBus.emit(HabitToggledEvent(DateTime.now()));
   }

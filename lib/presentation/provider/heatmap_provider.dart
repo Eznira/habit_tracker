@@ -11,9 +11,7 @@ class HeatmapProvider extends ChangeNotifier {
 
   HeatmapProvider(this._repo, this._appEventBus) {
     _appEventBus.stream.listen((event) {
-      if (event is HabitToggledEvent) {
-        loadHeatmap();
-      }
+      loadHeatmap();
     });
   }
 
@@ -28,7 +26,7 @@ class HeatmapProvider extends ChangeNotifier {
 
   /// Called when habit completion changes
   Future<void> updateToday(bool increment) async {
-    final value = await _repo.updateToday(increment: increment);
+    final value = await _repo.updateToday(increment);
     await loadHeatmap();
   }
 }

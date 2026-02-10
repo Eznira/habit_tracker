@@ -13,6 +13,7 @@ class HabitMapper {
       id: model.id,
       name: model.habitName,
       completedDays: model.completedDays,
+
     );
   }
 
