@@ -15,6 +15,8 @@ import 'data/repos/habit_repo_impl.dart';
 import 'data/repos/heatmap_repo_impl.dart';
 import 'domain/app_event_bus.dart';
 import 'domain/usecases/create_habit_usecase.dart';
+import 'domain/usecases/delete_habit_usecase.dart';
+import 'domain/usecases/edit_habit_usecase.dart';
 import 'domain/usecases/toggle_habit_usecase.dart';
 
 
@@ -37,6 +39,11 @@ void main() async {
   // Create use cases
   final toggleHabitUseCase = ToggleHabitUseCase(habitRepo, heatRepo, eventBus);
   final createHabitUseCase = CreateHabitUseCase(habitRepo, heatRepo, eventBus);
+  final editHabitUseCase = EditHabitUseCase(habitRepo, heatRepo, eventBus);
+  final deleteHabitUseCase = DeleteHabitUseCase(habitRepo, heatRepo, eventBus);
+
+  // Run app
+
 
 
   runApp(
@@ -48,7 +55,8 @@ void main() async {
         ChangeNotifierProvider(
           create: (BuildContext context) => HabitProvider(
               habitRepo,
-              toggleHabitUseCase, eventBus, createHabitUseCase)..loadHabits(),
+              toggleHabitUseCase, eventBus, createHabitUseCase, editHabitUseCase, deleteHabitUseCase
+          )..loadHabits(),
         ),
         ChangeNotifierProvider(
           create: (BuildContext context) => HeatmapProvider(heatRepo, eventBus)..loadHeatmap(),

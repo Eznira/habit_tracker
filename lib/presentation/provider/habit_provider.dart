@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:habit_tracker/domain/app_event_bus.dart';
+import 'package:habit_tracker/domain/usecases/edit_habit_usecase.dart';
 import '../../domain/app_event.dart';
 import '../../domain/entities/habit_entity.dart';
 import '../../domain/repository/habit_repo.dart';
 import '../../domain/usecases/create_habit_usecase.dart';
+import '../../domain/usecases/delete_habit_usecase.dart';
 import '../../domain/usecases/toggle_habit_usecase.dart';
 
 class HabitProvider extends ChangeNotifier {
@@ -11,6 +13,9 @@ class HabitProvider extends ChangeNotifier {
   final ToggleHabitUseCase _toggleHabitUseCase;
   final CreateHabitUseCase _createHabitUseCase;
   final AppEventBus _appEventBus;
+  final EditHabitUseCase _editHabitUseCase;
+  final DeleteHabitUseCase _deleteHabitUseCase;
+
 
   List<HabitEntity> habits = [];
 
@@ -18,7 +23,9 @@ class HabitProvider extends ChangeNotifier {
       this._habitRepo,
       this._toggleHabitUseCase,
       this._appEventBus,
-      this._createHabitUseCase
+      this._createHabitUseCase,
+      this._editHabitUseCase,
+      this._deleteHabitUseCase
       ) {
       _appEventBus.stream.listen((event) {
         loadHabits();
@@ -38,9 +45,13 @@ class HabitProvider extends ChangeNotifier {
     await _createHabitUseCase.execute(habitName);
   }
 
-  // Future<void> deleteHabit(int id) async {
-  //   await habitRepo.deleteHabit(id);
-  //   await loadHabits();
-  // }
+  Future<void> editHabit(int id, String habitName) async {
+    await _editHabitUseCase.execute(id, habitName);
+  }
+
+
+  Future<void> deleteHabit(int id) async {
+    await _deleteHabitUseCase.execute(id);
+  }
 
 }

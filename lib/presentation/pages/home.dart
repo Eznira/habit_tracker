@@ -26,11 +26,11 @@ class _HomeState extends State<Home> {
   TextEditingController controller = TextEditingController();
 
   // add new habit
-  void addAndEditNewHabit([Habit? habit]) {
+  void _addOrEditNewHabit([HabitEntity? habit]) {
     String? oldName;
 
     if (habit != null) {
-      oldName = habit.habitName;
+      oldName = habit.name;
       controller.text = oldName;
     }
     showDialog(
@@ -49,9 +49,9 @@ class _HomeState extends State<Home> {
                 controller.clear();
                 Navigator.pop(context);
               } else {
-                // habitProvider.updateHabit(habit!.id, controller.text);
-                // controller.clear();
-                // Navigator.pop(context);
+                habitProvider.editHabit(habit!.id, controller.text);
+                controller.clear();
+                Navigator.pop(context);
               }
             },
 
@@ -66,29 +66,7 @@ class _HomeState extends State<Home> {
   }
 
   void createHabit() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          // Habit instance
-          final habitProvider = context.read<HabitProvider>();
-
-          // custom dialogue
-          return CustomDialogue(
-            controller: controller,
-            // handle 'save' ontap
-            save: () {
-                habitProvider.createHabit(controller.text);
-                controller.clear();
-                Navigator.pop(context);
-            },
-
-            // handle 'cancel' onTap
-            cancel: () {
-              controller.clear();
-              Navigator.pop(context);
-            },
-          );
-        });
+    _addOrEditNewHabit();
   }
 
   // toggle habit completion state
@@ -100,13 +78,13 @@ class _HomeState extends State<Home> {
 
   // delete habit
   void deleteHabit(HabitEntity habit) {
-    // context.read<HabitDb>().deleteHabit(habit.id);
+    context.read<HabitProvider>().deleteHabit(habit.id);
   }
 
   // delete habit
   void editHabit(HabitEntity habit) {
     // // call show dialogue box and prefill with habit name
-    // addAndEditNewHabit(habit);
+    _addOrEditNewHabit(habit);
   }
 
 
@@ -136,8 +114,6 @@ class _HomeState extends State<Home> {
   }
 
   Widget buildHeatMapWidget() {
-
-
 
     List<DailyStatsEntity> dailyStat = context.watch<HeatmapProvider>().dailyStat;
     DateTime? firstLaunch = context.watch<SettingsProvider>().settings?.date;
@@ -211,7 +187,7 @@ class _HomeState extends State<Home> {
         ),
         floatingActionButton: FloatingActionButton(
           shape: const CircleBorder(),
-          onPressed: () => addAndEditNewHabit(),
+          onPressed: () => _addOrEditNewHabit(),
           backgroundColor: Colors.green,
           child: Icon(
             Icons.add,

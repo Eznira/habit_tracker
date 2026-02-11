@@ -55,4 +55,15 @@ class HabitRepoImpl implements HabitRepo {
 
   }
 
+  @override
+  Future<void> editHabit(int id, String name) async {
+
+    final habit = await isar.habits.get(id);
+    habit?.habitName = name;
+
+    await isar.writeTxn(() async {
+      await isar.habits.put(habit!);
+    });
+  }
+
 }

@@ -4,5 +4,6 @@ abstract class HabitRepo {
   Future<List<HabitEntity>> getHabits();
   Future<void> toggleHabit(int habitId, bool completed);
   Future<void> createHabit(String habitName);
+  Future<void> editHabit(int id, String name);
   Future<void> deleteHabit(int id);
 }

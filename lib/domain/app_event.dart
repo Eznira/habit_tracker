@@ -10,3 +10,13 @@ class HabitCreatedEvent extends AppEvent {
   HabitCreatedEvent(this.time);
 }
 
+class EditedHabitEvent extends AppEvent {
+  final DateTime time;
+  EditedHabitEvent(this.time);
+}
+
+
+class DeletedHabitEvent extends AppEvent {
+  final DateTime time;
+  DeletedHabitEvent(this.time);
+}

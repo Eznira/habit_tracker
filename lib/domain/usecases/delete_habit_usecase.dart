@@ -4,18 +4,18 @@ import 'package:habit_tracker/domain/repository/heatmap_repo.dart';
 
 import '../app_event.dart';
 
-class CreateHabitUseCase {
+class DeleteHabitUseCase {
 
   final HabitRepo _habitRepo;
   final HeatmapRepo _heatmapRepo;
   final  AppEventBus _eventBus;
 
 
-  CreateHabitUseCase(this._habitRepo, this._heatmapRepo, this._eventBus);
+  DeleteHabitUseCase(this._habitRepo, this._heatmapRepo, this._eventBus);
 
-  Future<void> execute (String habitName) async {
-    await _habitRepo.createHabit(habitName);
+  Future<void> execute (int id) async {
+    await _habitRepo.deleteHabit(id);
     await _heatmapRepo.updateToday();
-    _eventBus.emit(EditedHabitEvent(DateTime.now()));
+    _eventBus.emit(DeletedHabitEvent(DateTime.now()));
   }
 }
