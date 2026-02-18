@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 class CustomDialogue extends StatefulWidget {
-  CustomDialogue({
+  const CustomDialogue({
     super.key,
     required this.controller,
     required this.cancel,
     required this.save,
   });
 
-  TextEditingController controller;
+  final TextEditingController controller;
 
   final void Function()? cancel;
   final void Function()? save;
