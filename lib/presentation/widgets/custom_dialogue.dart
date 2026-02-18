@@ -9,8 +9,11 @@ class CustomDialogue extends StatefulWidget {
   });
 
   TextEditingController controller;
+
   final void Function()? cancel;
   final void Function()? save;
+
+
 
   @override
   State<CustomDialogue> createState() => _CustomDialogueState();
@@ -18,6 +21,24 @@ class CustomDialogue extends StatefulWidget {
 
 class _CustomDialogueState extends State<CustomDialogue> {
   String? enteredText;
+  FocusNode focusNode = FocusNode();
+
+  @override
+  initState()  {
+
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      focusNode.requestFocus();
+    });
+
+  }
+
+  @override
+  void dispose() {
+    focusNode.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +54,8 @@ class _CustomDialogueState extends State<CustomDialogue> {
         ),
       ),
       content: TextField(
+        autofocus: true,
+        focusNode: focusNode,
         controller: widget.controller,
         style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
         decoration: InputDecoration(

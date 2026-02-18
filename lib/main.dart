@@ -65,7 +65,7 @@ void main() async {
           create: (BuildContext context) => SettingsProvider(settingsRepo)..loadSettings(),
         ),
       ],
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }
