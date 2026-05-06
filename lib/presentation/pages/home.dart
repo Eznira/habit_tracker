@@ -191,6 +191,7 @@ class _HomeState extends State<Home> {
           backgroundColor: Colors.green,
           child: Icon(
             Icons.add,
+
             color: Theme.of(context).colorScheme.inversePrimary,
           ),
         ),

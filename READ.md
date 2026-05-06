@@ -151,38 +151,3 @@ lib/
 
 **Arinze Ihim**
 Flutter Developer 🚀
-
-
-## Getting Started
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
-### Prerequisites
-
-- Flutter SDK: [Install Flutter](https://flutter.dev/docs/get-started/install)
-- A code editor (e.g., VS Code, Android Studio)
-
-### Installation
-
-1. **Clone the repository:**
-    ```bash
-    git clone https://github.com/eznira/habit-tracker.git
-    cd habit-tracker
-    ```
-
-2. **Install dependencies:**
-    ```bash
-    flutter pub get
-    ```
-
-3. **Run the app:**
-    ```bash
-    flutter run
-    ```
